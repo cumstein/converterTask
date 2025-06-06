@@ -51,11 +51,13 @@ export default function CurrencyConverter() {
       }
 
       setResult(data.result);
-    } catch (err: any) {
-      if (err.message.includes("fetch") || err.message.includes("Failed to fetch")) {
-        setError("ارتباط با اینترنت برقرار نشد. لطفاً اتصال خود را بررسی کنید.");
-      } else {
-        setError(err.message || "خطایی رخ داده است. لطفاً دوباره تلاش کنید.");
+    } catch (err: unknown) {
+    if (err instanceof Error) {
+        if (err.message.includes("fetch") || err.message.includes("Failed to fetch")) {
+          setError("ارتباط با اینترنت برقرار نشد. لطفاً اتصال خود را بررسی کنید.");
+        } else {
+          setError(err.message || "خطایی رخ داده است. لطفاً دوباره تلاش کنید.");
+        }
       }
     } finally {
       setLoading(false);
