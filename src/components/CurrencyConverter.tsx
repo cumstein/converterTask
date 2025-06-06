@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 export default function CurrencyConverter() {
   const [amount, setAmount] = useState("");
@@ -11,12 +12,15 @@ export default function CurrencyConverter() {
   );
   const [result, setResult] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const from = direction === "USD_TO_IRR" ? "USD" : "IRR";
   const to = direction === "USD_TO_IRR" ? "IRR" : "USD";
 
   const toggleDirection = () => {
     setResult(null);
+    setAmount("");
+    setError(null);
     setDirection((prev) =>
       prev === "USD_TO_IRR" ? "IRR_TO_USD" : "USD_TO_IRR"
     );
@@ -24,18 +28,35 @@ export default function CurrencyConverter() {
 
   const handleConvert = async () => {
     if (!amount) return;
+
     setLoading(true);
+    setError(null);
+    setResult(null);
 
     try {
       const res = await fetch("/api/convert", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount, from, to }),
       });
 
+      if (!res.ok) {
+        throw new Error("پاسخی از سمت سرور دریافت نشد");
+      }
+
       const data = await res.json();
+
+      if (data?.result === undefined) {
+        throw new Error("داده‌ای برای نمایش موجود نیست");
+      }
+
       setResult(data.result);
-    } catch (err) {
-      console.error("Error:", err);
+    } catch (err: any) {
+      if (err.message.includes("fetch") || err.message.includes("Failed to fetch")) {
+        setError("ارتباط با اینترنت برقرار نشد. لطفاً اتصال خود را بررسی کنید.");
+      } else {
+        setError(err.message || "خطایی رخ داده است. لطفاً دوباره تلاش کنید.");
+      }
     } finally {
       setLoading(false);
     }
@@ -59,10 +80,15 @@ export default function CurrencyConverter() {
 
       <Input
         type="number"
+        min="1"
         className="h-12 text-lg"
         placeholder={`مثلاً ۱۰۰ ${from === "USD" ? "دلار ($)" : "ریال (﷼)"}`}
         value={amount}
-        onChange={(e) => setAmount(e.target.value)}
+        onChange={(e) => {
+          const value = Number(e.target.value);
+          if (value < 1) return;
+          setAmount(e.target.value);
+        }}
       />
 
       <div className="flex justify-center">
@@ -75,10 +101,28 @@ export default function CurrencyConverter() {
         </Button>
       </div>
 
-      {result !== null && (
-        <p className="text-center text-xl font-semibold text-blue-600">
+      {error && (
+        <motion.p
+          key={error}
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="text-red-500 text-sm text-center"
+        >
+          {error}
+        </motion.p>
+      )}
+
+      {result && (
+        <motion.p
+          key={result}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-center text-xl font-semibold text-blue-600"
+        >
           نتیجه: {result.toLocaleString()} {to === "USD" ? "$" : "﷼"}
-        </p>
+        </motion.p>
       )}
     </div>
   );

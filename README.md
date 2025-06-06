@@ -1,4 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+تبدیل ارز (Currency Converter)
+
+یک اپلیکیشن ساده، زیبا و واکنش‌گرا برای تبدیل ارز بین دلار آمریکا (USD) و ریال ایران (IRR) که با استفاده از Next.js، React، ShadCN UI و Framer Motion ساخته شده است.
+
+---
+
+## ویژگی‌ها
+
+- تبدیل دوطرفه بین دلار و ریال
+- دکمه تغییر جهت تبدیل
+- رابط کاربری واکنش‌گرا و سازگار با موبایل (Mobile First)
+- طراحی زیبا با استفاده از ShadCN UI
+- انیمیشن ساده و جذاب با Framer Motion
+- جلوگیری از ورود اعداد منفی یا صفر
+- هندل‌کردن خطاهای API و قطع اینترنت
+- استفاده از ساختار app در Next.js
+
+---
+
+## تکنولوژی‌ها
+
+- Next.js (App Router)
+- React
+- ShadCN UI
+- Tailwind CSS
+- Framer Motion
+
+---
+## API مورد استفاده
+
+از API سایت [ExchangeRate-API](https://app.exchangerate-api.com/) استفاده شده که نرخ ارز رو بین دلار و ریال می‌ده.
 
 ## Getting Started
 

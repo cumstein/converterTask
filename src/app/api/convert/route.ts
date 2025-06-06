@@ -13,6 +13,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ result });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: "خطا در پردازش درخواست" }, { status: 500 });
   }
 }
