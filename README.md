@@ -1,6 +1,6 @@
 تبدیل ارز (Currency Converter)
 
-یک اپلیکیشن ساده، زیبا و واکنش‌گرا برای تبدیل ارز بین دلار آمریکا (USD) و ریال ایران (IRR) که با استفاده از Next.js، React، ShadCN UI و Framer Motion ساخته شده است.
+یک اپلیکیشن ساده برای تبدیل ارز بین دلار آمریکا (USD) و ریال ایران (IRR) که با استفاده از Next.js، React، ShadCN UI و Framer Motion ساخته شده است.
 
 ---
 
